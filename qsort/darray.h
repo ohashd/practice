@@ -7,8 +7,8 @@ template<typename T>
 class DArray{
 public:
 	DArray();
-	DArray(int n);
-	DArray(DArray &other);
+	explicit DArray(int n);
+	DArray(const DArray &other);
 	DArray& operator=(DArray other);
 	~DArray();
 	const int size() const;
