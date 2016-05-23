@@ -1,8 +1,8 @@
 #include <iostream>
-#include "cintarray.h"
+#include "darray.h"
 
 int main(){
-	CIntArray nums;
+	DArray<int> nums;
 	int in;
 	while(std::cin >> in){
 		nums.push(in);

@@ -1,2 +1,2 @@
 default:
-	g++ main.cpp cintarray.cpp
+	g++ main.cpp
