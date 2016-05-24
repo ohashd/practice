@@ -1,16 +1,21 @@
 #ifndef __DARRAY__
 #define __DARRAY__
 
-#include <utility>
+#include <cstring>
 
 template<typename T>
 class DArray{
 public:
 	DArray();
-	explicit DArray(int n);
-	DArray(const DArray &other);
-	DArray& operator=(DArray other);
+
+	DArray(const DArray& other);
+	DArray(DArray &&other) noexcept;
+
+	DArray& operator=(const DArray& other);
+	DArray& operator=(DArray &&other) noexcept;
+
 	~DArray();
+
 	const int size() const;
 	void push(T item);
 	T& operator[](int ind);

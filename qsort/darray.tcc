@@ -1,31 +1,59 @@
+//Default Constructor
 template<typename T>
 DArray<T>::DArray():m_size(0),m_maxsize(5){
 	m_arr = new T[5];
 }
 
+//Copy Constructor
 template<typename T>
-DArray<T>::DArray(int n):m_size(0),m_maxsize(n){
-	m_arr = new T[n];
-}
-
-template<typename T>
-DArray<T>::DArray(DArray<T> &other){
+DArray<T>::DArray(const DArray<T> &other):
+m_size(other.m_size),
+m_maxsize(other.m_maxsize){
 	m_arr = new T[m_maxsize];
-	m_size = other.m_size;
-	m_maxsize = other.m_maxsize;
-	for(int i=0;i<other.m_size;i++){
-		m_arr[i]=other.m_arr[i];
-	}
+	std::memcpy(m_arr,other.m_arr,sizeof(T)*other.m_size);
 }
 
+//Move Constructor
 template<typename T>
-DArray<T>& DArray<T>::operator=(DArray<T> other){
-	m_size = other.m_size;
-	m_maxsize = other.m_maxsize;
-	std::swap(m_arr,other.m_arr);
+DArray<T>::DArray(DArray<T>&& other) noexcept:
+m_arr(other.m_arr),
+m_size(other.m_size),
+m_maxsize(other.m_maxsize){
+	other.m_arr=NULL;
+}
+
+//Assignment Operator
+template<typename T>
+DArray<T>& DArray<T>::operator=(const DArray<T>& other){
+
+	if(this!=&other){
+
+		m_size=other.m_size;
+		m_maxsize=other.m_maxsize;
+
+		delete [] m_arr;
+		m_arr=NULL;
+		m_arr = new T[m_maxsize];
+		std::memcpy(m_arr,other.m_arr,sizeof(T)*other.m_size);
+	}
+
 	return (*this);
 }
 
+//Move Operator
+template<typename T>
+DArray<T>& DArray<T>::operator=(DArray<T>&& other) noexcept{
+	m_size = other.m_size;
+	m_maxsize = other.m_maxsize;
+
+	delete [] m_arr;
+	m_arr = other.m_arr;
+	other.m_arr=NULL;
+
+	return (*this);
+}
+
+//Destructor
 template<typename T>
 DArray<T>::~DArray(){
 	delete [] m_arr;
