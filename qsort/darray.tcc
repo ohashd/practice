@@ -81,3 +81,15 @@ template<typename T>
 T& DArray<T>::operator[](int i){
 	return m_arr[i];
 }
+template<typename T>
+const T& DArray<T>::operator[](int i) const{
+	return m_arr[i];
+}
+template<typename T>
+bool operator==(const DArray<T> &lhs, const DArray<T> &rhs){
+	if(lhs.size()!=rhs.size())return false;
+	for(int i=0;i<lhs.size();i++){
+		if(lhs[i]!=rhs[i])return false;
+	}
+	return true;
+}
