@@ -68,9 +68,8 @@ template<typename T>
 void DArray<T>::push(T n){
 	if(m_size>=m_maxsize){
 		T *newarr = new T[m_maxsize*2];
-		for(int i=0;i<m_size;i++){
-			newarr[i]=m_arr[i];
-		}
+		m_maxsize*=2;
+		std::memcpy(newarr,m_arr,sizeof(T)*m_size);
 		delete [] m_arr;
 		m_arr = newarr;
 	}

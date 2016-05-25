@@ -3,6 +3,30 @@
 #include <utility>
 #include "darray.h"
 
+//dupe qsort
+void dqsort(int*left, int*right){
+	if(left>=right)return;
+	int* pivot = left + std::rand() % (1+right-left);
+	std::swap(*pivot,*left);
+	int *i=left+1;
+	int *lt=left;
+	int *gt=right;
+	while(i<=gt){
+		if(*i==*lt){
+			i++;
+		}else if(*i<*lt){
+			std::swap(*lt,*i);
+			i++;
+			lt++;
+		}else if(*i>*lt){
+			std::swap(*gt,*i);
+			gt--;
+		}
+	}
+	dqsort(left,lt-1);
+	dqsort(gt+1,right);
+}
+//nondupe qsort
 void qsort(int*left, int*right){
 	if(left>=right)return;
 	int* pivot = left + std::rand() % (1+right-left);
@@ -32,7 +56,7 @@ void qsort(int*left, int*right){
 
 void qsort(DArray<int>& arr){
 	if(arr.size()>0)
-	qsort(&arr[0],&arr[arr.size()-1]);
+	dqsort(&arr[0],&arr[arr.size()-1]);
 }
 
 int main(){
