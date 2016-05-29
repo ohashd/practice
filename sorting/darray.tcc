@@ -1,6 +1,6 @@
 //Default Constructor
 template<typename T>
-DArray<T>::DArray():m_size(0),m_maxsize(5){
+DArray<T>::DArray():m_size(0),m_maxsize(5),m_arr(NULL){
 	m_arr = new T[5];
 }
 
@@ -40,7 +40,7 @@ DArray<T>& DArray<T>::operator=(const DArray<T>& other){
 	return (*this);
 }
 
-//Move Operator
+//Move Assignment
 template<typename T>
 DArray<T>& DArray<T>::operator=(DArray<T>&& other) noexcept{
 	m_size = other.m_size;

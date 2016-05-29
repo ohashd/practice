@@ -7,14 +7,13 @@ template<typename T>
 class DArray{
 public:
 	DArray();
+	~DArray();
 
 	DArray(const DArray& other);
 	DArray(DArray &&other) noexcept;
 
 	DArray& operator=(const DArray& other);
 	DArray& operator=(DArray &&other) noexcept;
-
-	~DArray();
 	
 	T& operator[](int ind);
 	const T& operator[](int ind) const;
