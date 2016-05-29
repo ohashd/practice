@@ -3,6 +3,17 @@
 #include <utility>
 #include "darray.h"
 
+//insertion sort
+void isort(int*left,int size){
+	for(int i=1;i<size;i++){
+		int *j=(left+i);
+		while(j>left && *j<*(j-1)){
+			std::swap(*j,*(j-1));
+			j--;
+		}
+	}
+}
+
 //dupe qsort
 void dqsort(int*left, int*right){
 	if(left>=right)return;
@@ -55,8 +66,9 @@ void qsort(int*left, int*right){
 
 void sort(DArray<int>& arr){
 	if(arr.size()>0)
-	dqsort(&arr[0],&arr[arr.size()-1]);
+	//dqsort(&arr[0],&arr[arr.size()-1]);
 	//qsort(&arr[0],&arr[arr.size()-1]);
+	isort(&arr[0],arr.size());
 }
 
 int main(){
