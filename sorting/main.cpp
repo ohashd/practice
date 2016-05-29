@@ -53,9 +53,10 @@ void qsort(int*left, int*right){
 	qsort(i+1,right);
 }
 
-void qsort(DArray<int>& arr){
+void sort(DArray<int>& arr){
 	if(arr.size()>0)
 	dqsort(&arr[0],&arr[arr.size()-1]);
+	//qsort(&arr[0],&arr[arr.size()-1]);
 }
 
 int main(){
@@ -64,7 +65,7 @@ int main(){
 	while(std::cin >> in){
 		nums.push(in);
 	}
-	qsort(nums);
+	sort(nums);
 	for(int i=0;i<nums.size();i++){
 		printf("%d\n",nums[i]);
 	}
