@@ -15,11 +15,13 @@ public:
 	DArray& operator=(DArray &&other) noexcept;
 
 	~DArray();
+	
+	T& operator[](int ind);
+	const T& operator[](int ind) const;
 
 	const int size() const;
 	void push(T item);
-	T& operator[](int ind);
-	const T& operator[](int ind) const;
+
 private:
 	int m_size;
 	int m_maxsize;

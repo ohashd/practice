@@ -34,7 +34,6 @@ void qsort(int*left, int*right){
 	int *i=left;
 	int *j=right-1;
 	while(i<=j){
-		std::cout << *i << " " << *j <<std::endl;
 		if(*i <= *right){
 			i++;
 		}else if(*j > *right){
