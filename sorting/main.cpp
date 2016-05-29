@@ -3,6 +3,21 @@
 #include <utility>
 #include "darray.h"
 
+//selection sort
+void ssort(int*left, int size){
+	for(int i=size-1;i>=0;i--){
+		int *highest=left;
+		for(int j=0;j<i;j++){
+			if(*(left+j)>*highest){
+				highest=(left+j);
+			}
+		}
+		if(*highest>*(left+i)){
+			std::swap(*highest,*(left+i));
+		}
+	}
+}
+
 //insertion sort
 void isort(int*left,int size){
 	for(int i=1;i<size;i++){
@@ -68,7 +83,8 @@ void sort(DArray<int>& arr){
 	if(arr.size()>0)
 	//dqsort(&arr[0],&arr[arr.size()-1]);
 	//qsort(&arr[0],&arr[arr.size()-1]);
-	isort(&arr[0],arr.size());
+	//isort(&arr[0],arr.size());
+	ssort(&arr[0],arr.size());
 }
 
 int main(){
