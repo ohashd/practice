@@ -20,8 +20,12 @@ public:
 	DHeap& operator=(const DHeap&);
 	DHeap& operator=(DHeap &&) noexcept;
 
+	T& operator[](int);
+	const T& operator[](int) const;
+
 	const int size() const;
 	void push(T);
+	
 private:
 	int m_size;
 	int m_maxsize;

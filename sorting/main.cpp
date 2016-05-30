@@ -94,8 +94,8 @@ int main(){
 	while(std::cin >> in){
 		nums.push(in);
 	}
-	sort(nums);
-	for(int i=0;i<nums.size();i++){
-		printf("%d\n",nums[i]);
+	DHeap<int> hp(nums);
+	for(int i=0;i<hp.size();i++){
+		printf("%d\n",hp[i]);
 	}
 }

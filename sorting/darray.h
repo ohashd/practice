@@ -9,7 +9,7 @@ class DHeap;
 template<typename T>
 class DArray{
 	friend class DHeap<T>;
-	
+
 public:
 	DArray();
 	~DArray();
@@ -25,7 +25,6 @@ public:
 
 	const int size() const;
 	void push(T item);
-
 
 private:
 	int m_size;

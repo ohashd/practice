@@ -2,8 +2,8 @@
 template<typename T>
 DArray<T>::DArray():
 m_size(0),
-m_maxsize(5){
-	m_arr = new T[5];
+m_maxsize(7){
+	m_arr = new T[7];
 }
 
 //Copy Constructor
@@ -70,7 +70,7 @@ template<typename T>
 void DArray<T>::push(T n){
 	if(m_size>=m_maxsize){
 		T *newarr = new T[m_maxsize*2];
-		m_maxsize*=2;
+		m_maxsize=m_maxsize*2+1;
 		std::memcpy(newarr,m_arr,sizeof(T)*m_size);
 		delete [] m_arr;
 		m_arr = newarr;

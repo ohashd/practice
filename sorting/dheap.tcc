@@ -2,8 +2,8 @@
 template <typename T>
 DHeap<T>::DHeap():
 m_size(0),
-m_maxsize(5){
-	m_heap = new T[5];
+m_maxsize(7){
+	m_heap = new T[7];
 }
 
 //Copy constructor
@@ -83,7 +83,7 @@ template <typename T>
 void DHeap<T>::push(T elem){
 	if(m_size>=m_maxsize){
 		T *newheap = new T[m_maxsize*2];
-		m_maxsize*=2;
+		m_maxsize=m_maxsize*2+1;
 		std::memcpy(newheap,m_heap,sizeof(T)*m_size);
 		delete [] m_heap;
 		m_heap = newheap;
@@ -95,4 +95,14 @@ void DHeap<T>::push(T elem){
 template <typename T>
 const int DHeap<T>::size() const{
 	return m_size;
+}
+
+template <typename T>
+T& DHeap<T>::operator[](int ind){
+	return m_heap[ind];
+}
+
+template <typename T>
+const T& DHeap<T>::operator[](int ind) const{
+	return m_heap[ind];
 }
