@@ -25,11 +25,12 @@ public:
 
 	const int size() const;
 	void push(T);
-	
+
 private:
 	int m_size;
 	int m_maxsize;
 	T *m_heap;
+	void bubup(int);
 };
 
 #include "dheap.tcc"

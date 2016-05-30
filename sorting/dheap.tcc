@@ -89,7 +89,21 @@ void DHeap<T>::push(T elem){
 		m_heap = newheap;
 	}
 	m_heap[m_size]=elem;
+	bubup(m_size);
 	m_size++;
+}
+
+template <typename T>
+void DHeap<T>::bubup(int ind){
+	while(ind > 0){
+		int parent = (ind&1 ? (ind-1)/2 : (ind-2)/2);
+		if(m_heap[ind]>m_heap[parent]){
+			std::swap(m_heap[ind],m_heap[parent]);
+			ind=parent;
+		}else{
+			break;
+		}
+	}
 }
 
 template <typename T>

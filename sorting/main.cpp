@@ -89,7 +89,7 @@ void sort(DArray<int>& arr){
 }
 
 int main(){
-	DArray<int> nums;
+	DHeap<int> nums;
 	int in;
 	while(std::cin >> in){
 		nums.push(in);
