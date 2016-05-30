@@ -89,12 +89,16 @@ void sort(DArray<int>& arr){
 }
 
 int main(){
-	DHeap<int> nums;
+	DArray<int> nums;
 	int in;
 	while(std::cin >> in){
 		nums.push(in);
 	}
-	DHeap<int> hp(nums);
+	for(int i=0;i<nums.size();i++){
+		printf("%d\n",nums[i]);
+	}
+	std::cout << "HEAPIFY" << std::endl;
+	DHeap<int> hp(std::move(nums));
 	for(int i=0;i<hp.size();i++){
 		printf("%d\n",hp[i]);
 	}

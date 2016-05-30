@@ -31,6 +31,7 @@ private:
 	int m_maxsize;
 	T *m_heap;
 	void bubup(int);
+	void bubdwn(int);
 };
 
 #include "dheap.tcc"
