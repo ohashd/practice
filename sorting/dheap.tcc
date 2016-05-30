@@ -1,6 +1,8 @@
 //Default constructor
 template <typename T>
-DHeap<T>::DHeap():m_size(0),m_maxsize(5),m_heap(NULL){
+DHeap<T>::DHeap():
+m_size(0),
+m_maxsize(5){
 	m_heap = new T[5];
 }
 
@@ -8,13 +10,30 @@ DHeap<T>::DHeap():m_size(0),m_maxsize(5),m_heap(NULL){
 template <typename T>
 DHeap<T>::DHeap(const DHeap<T>& other):
 m_size(other.m_size),
-m_maxsize(other.m_maxsize),
-m_heap(NULL){
+m_maxsize(other.m_maxsize){
 	m_heap = new T[m_maxsize];
 	std::memcpy(m_heap,other.m_heap,sizeof(T)*other.m_size);
 }
 
-//Moce constructor
+//Copy construct from darray
+template <typename T>
+DHeap<T>::DHeap(const DArray<T> &other):
+m_size(other.m_size),
+m_maxsize(other.m_maxsize){
+	m_heap = new T[m_maxsize];
+	std::memcpy(m_heap,other.m_arr,sizeof(T)*other.m_size);
+}
+
+//Move construct from darray
+template <typename T>
+DHeap<T>::DHeap(DArray<T> &&other):
+m_size(other.m_size),
+m_maxsize(other.m_maxsize){
+	m_heap = other.m_arr;
+	other.m_arr=NULL;
+}
+
+//Move constructor
 template <typename T>
 DHeap<T>::DHeap(DHeap<T> &&other) noexcept:
 m_size(other.m_size),
@@ -58,6 +77,19 @@ DHeap<T>& DHeap<T>::operator=(DHeap<T> &&other) noexcept{
 	other.m_heap = NULL;
 
 	return *this;
+}
+
+template <typename T>
+void DHeap<T>::push(T elem){
+	if(m_size>=m_maxsize){
+		T *newheap = new T[m_maxsize*2];
+		m_maxsize*=2;
+		std::memcpy(newheap,m_heap,sizeof(T)*m_size);
+		delete [] m_heap;
+		m_heap = newheap;
+	}
+	m_heap[m_size]=elem;
+	m_size++;
 }
 
 template <typename T>

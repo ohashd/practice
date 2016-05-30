@@ -1,6 +1,8 @@
 //Default Constructor
 template<typename T>
-DArray<T>::DArray():m_size(0),m_maxsize(5),m_arr(NULL){
+DArray<T>::DArray():
+m_size(0),
+m_maxsize(5){
 	m_arr = new T[5];
 }
 

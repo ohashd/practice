@@ -2,6 +2,7 @@
 #include <cstdlib>
 #include <utility>
 #include "darray.h"
+#include "dheap.h"
 
 //selection sort
 void ssort(int*left, int size){

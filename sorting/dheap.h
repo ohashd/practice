@@ -4,6 +4,9 @@
 #include <cstring>
 
 template <typename T>
+class DArray;
+
+template <typename T>
 class DHeap{
 public:
 	DHeap();
@@ -11,12 +14,14 @@ public:
 
 	DHeap(const DHeap&);
 	DHeap(DHeap &&) noexcept;
+	DHeap(const DArray<T> &);
+	DHeap(DArray<T> &&);
 
 	DHeap& operator=(const DHeap&);
 	DHeap& operator=(DHeap &&) noexcept;
 
 	const int size() const;
-	void insert(T);
+	void push(T);
 private:
 	int m_size;
 	int m_maxsize;
