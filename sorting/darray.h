@@ -1,15 +1,8 @@
 #ifndef __DARRAY__
 #define __DARRAY__
 
-#include <cstring>
-
-template <typename T>
-class DHeap;
-
 template<typename T>
 class DArray{
-	friend class DHeap<T>;
-
 public:
 	DArray();
 	~DArray();

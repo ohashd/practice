@@ -18,9 +18,9 @@ m_maxsize(other.m_maxsize){
 //Move Constructor
 template<typename T>
 DArray<T>::DArray(DArray<T>&& other) noexcept:
-m_arr(other.m_arr),
 m_size(other.m_size),
-m_maxsize(other.m_maxsize){
+m_maxsize(other.m_maxsize),
+m_arr(other.m_arr){
 	other.m_arr=NULL;
 }
 

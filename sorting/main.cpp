@@ -1,8 +1,33 @@
 #include <iostream>
-#include <cstdlib>
 #include <utility>
 #include "darray.h"
-#include "dheap.h"
+
+void bubdwn(int*root,int i,int size){
+	for(;;){
+		int child = i*2+1;
+		if(child>=size)return;
+		if(child+1<size && root[child]<root[child+1])child++;
+		if(root[child]>root[i]){
+			std::swap(root[child],root[i]);
+			i=child;
+		}else return;
+	}
+}
+
+//heap sort
+void hsort(int*left, int size){
+	//HEAPIFY (max heap)
+	int firstBub = size&1 ? (size-3)/2 : (size-2)/2;
+	for(int j=firstBub;j>=0;j--){
+		bubdwn(left,j,size);
+	}
+	//Extract from top to sort:
+	while(size>1){
+		std::swap(left[0],left[size-1]);
+		size--;
+		bubdwn(left,0,size);
+	}
+}
 
 //selection sort
 void ssort(int*left, int size){
@@ -82,10 +107,11 @@ void qsort(int*left, int*right){
 
 void sort(DArray<int>& arr){
 	if(arr.size()>0)
+	hsort(&arr[0],arr.size());
+	//ssort(&arr[0],arr.size());
+	//isort(&arr[0],arr.size());
 	//dqsort(&arr[0],&arr[arr.size()-1]);
 	//qsort(&arr[0],&arr[arr.size()-1]);
-	//isort(&arr[0],arr.size());
-	ssort(&arr[0],arr.size());
 }
 
 int main(){
@@ -94,12 +120,8 @@ int main(){
 	while(std::cin >> in){
 		nums.push(in);
 	}
+	sort(nums);
 	for(int i=0;i<nums.size();i++){
-		printf("%d\n",nums[i]);
-	}
-	std::cout << "HEAPIFY" << std::endl;
-	DHeap<int> hp(std::move(nums));
-	for(int i=0;i<hp.size();i++){
-		printf("%d\n",hp[i]);
+		std::cout << nums[i] <<std::endl;
 	}
 }
