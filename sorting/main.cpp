@@ -2,6 +2,24 @@
 #include <utility>
 #include "darray.h"
 
+//Shell Sort
+void shellsort(int *left, int size){
+	//Ciura gap sequence
+	static const int gaps[] = {701,301,132,57,23,10,4,1};
+	for(int i=0;i<8;i++){//loop through gaps
+		for(int j=gaps[i];j<size;j++){
+			int* ind = left+j;
+			int tmp = *ind;
+			while(ind>left && *(ind-1)>tmp){
+				*ind = *(ind-1);
+				ind--;
+			}
+			*ind=tmp;
+		}
+	}
+}
+
+
 void bubdwn(int*root,int i,int size){
 	for(;;){
 		int child = i*2+1;
@@ -24,8 +42,8 @@ void hsort(int*left, int size){
 	//Extract from top to sort:
 	while(size>1){
 		std::swap(left[0],left[size-1]);
+		bubdwn(left,0,size-1);
 		size--;
-		bubdwn(left,0,size);
 	}
 }
 
@@ -48,10 +66,12 @@ void ssort(int*left, int size){
 void isort(int*left,int size){
 	for(int i=1;i<size;i++){
 		int *j=(left+i);
-		while(j>left && *j<*(j-1)){
-			std::swap(*j,*(j-1));
+		int temp = *j;
+		while(j>left && temp<*(j-1)){
+			*j=*(j-1);
 			j--;
 		}
+		*j=temp;
 	}
 }
 
@@ -107,7 +127,8 @@ void qsort(int*left, int*right){
 
 void sort(DArray<int>& arr){
 	if(arr.size()>0)
-	hsort(&arr[0],arr.size());
+	shellsort(&arr[0],arr.size());
+	//hsort(&arr[0],arr.size());
 	//ssort(&arr[0],arr.size());
 	//isort(&arr[0],arr.size());
 	//dqsort(&arr[0],&arr[arr.size()-1]);
