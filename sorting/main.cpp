@@ -2,6 +2,28 @@
 #include <utility>
 #include "darray.h"
 
+//Comb Sort
+void csort(int *left, int size){
+
+	int gap = size;
+	bool swap = false;
+	while(size>1 && swap){
+
+		swap=false;
+		gap =int(gap/1.3);
+		gap = gap < 1 ? 1 : gap;
+
+		for(int i=gap;i<size;i++){
+			if(*(left+i)<*(left+i-1)){
+				swap=true;
+				std::swap(*(left+i),*(left+i-1));
+			}
+		}
+		
+	}
+
+}
+
 //Bubble Sort
 void bsort(int *left, int size){
 	bool swap;
