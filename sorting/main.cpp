@@ -2,6 +2,21 @@
 #include <utility>
 #include "darray.h"
 
+//Bubble Sort
+void bsort(int *left, int size){
+	bool swap;
+	do{
+		swap=false;
+		for(int i=1;i<size;i++){
+			if(*(left+i)<*(left+i-1)){
+				swap=true;
+				std::swap(*(left+i),*(left+i-1));
+			}
+		}
+		size--;
+	}while(swap);
+}
+
 //Shell Sort
 void shellsort(int *left, int size){
 	//Ciura gap sequence
@@ -127,7 +142,8 @@ void qsort(int*left, int*right){
 
 void sort(DArray<int>& arr){
 	if(arr.size()>0)
-	shellsort(&arr[0],arr.size());
+	bsort(&arr[0],arr.size());
+	//shellsort(&arr[0],arr.size());
 	//hsort(&arr[0],arr.size());
 	//ssort(&arr[0],arr.size());
 	//isort(&arr[0],arr.size());
