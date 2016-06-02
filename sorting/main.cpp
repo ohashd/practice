@@ -29,7 +29,7 @@ void splitAndMerge(int*arr, int *work, int left, int right){
 void msort(int *left, int size){
 	int *work = new int[size];
 	std::memcpy(work,left,sizeof(int)*size);
-	splitAndMerge(left,work,0,size-1);//potential leak on stack overflow
+	splitAndMerge(left,work,0,size-1);
 	delete [] work;
 }
 
