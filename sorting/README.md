@@ -1,5 +1,6 @@
 # Sorting Algorithms
 
+* Merge Sort
 * Comb Sort
 * Bubble Sort
 * Shell sort

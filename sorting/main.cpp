@@ -1,6 +1,37 @@
 #include <iostream>
 #include <utility>
+#include <cstring>
 #include "darray.h"
+
+void splitAndMerge(int*arr, int *work, int left, int right){
+	if(left>=right)return;
+	int size = right - left + 1;
+	int mid = int((left+right)/2);
+	splitAndMerge(work,arr,left,mid);
+	splitAndMerge(work,arr,mid+1,right);
+
+	int r=mid+1;
+	int l=left;
+
+	for(int i=left;i<size+left;i++){
+		if(l<=mid && (r>right || *(work+l)< *(work+r) )){
+			*(arr+i)=*(work+l);
+			l++;
+		}else{
+			*(arr+i)= *(work+r);
+			r++;
+		}
+	}
+
+}
+
+//Merge sort
+void msort(int *left, int size){
+	int *work = new int[size];
+	std::memcpy(work,left,sizeof(int)*size);
+	splitAndMerge(left,work,0,size-1);//potential leak on stack overflow
+	delete [] work;
+}
 
 //Comb Sort
 void csort(int *left, int size){
@@ -19,7 +50,7 @@ void csort(int *left, int size){
 				std::swap(*(left+i),*(left+i-1));
 			}
 		}
-		
+
 	}
 
 }
@@ -164,7 +195,8 @@ void qsort(int*left, int*right){
 
 void sort(DArray<int>& arr){
 	if(arr.size()>0)
-	bsort(&arr[0],arr.size());
+	msort(&arr[0],arr.size());
+	//bsort(&arr[0],arr.size());
 	//shellsort(&arr[0],arr.size());
 	//hsort(&arr[0],arr.size());
 	//ssort(&arr[0],arr.size());
