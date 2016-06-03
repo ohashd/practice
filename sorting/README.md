@@ -1,5 +1,6 @@
 # Sorting Algorithms
 
+## Things Implemented
 * Radix Sort (For 32 bit integers)
 * Merge Sort
 * Comb Sort
@@ -8,8 +9,11 @@
 * Heap sort
 * Selection sort
 * Insertion sort
-* Quick sort implementations for data with and without duplicates
+* Quick sort (duplicates)
+* Quick sort (no duplicates)
 
-
-* Template class for dynamic array
+## Concepts Practiced
+* Heaps
+* Divide and Conquer Algorithms
+* Template classes
 	* Move constructor and assignment
