@@ -3,6 +3,42 @@
 #include <cstring>
 #include "darray.h"
 
+//Radix Sort for 32 bit Ints
+void rsort(int*arr, int size){
+	int *end = arr+size;
+	int *workarr = new int[size];
+	int *workend = workarr+size;
+	//convert to uint
+	for(int* p=arr; p<end; p++){
+		*p = (*p) ^ (1 << 31);
+	}
+
+	for(int shift=0;shift<32;shift+=8){
+
+		int count[256]={0};
+		for(int* p=arr; p<end; p++){
+			count[(*p>> shift) & 255]++;
+		}
+		int*bucketStarts[256];
+		int *starts = workarr;
+		for(int i=0;i<256;i++){
+			bucketStarts[i]=starts;
+			starts+=count[i];
+		}
+		for(int *p=arr;p<end;p++){
+			*(bucketStarts[(*p >> shift) & 255])++=*p;
+		}
+		std::swap(arr,workarr);
+		std::swap(end,workend);
+	}
+	//convert back to int
+	for(int* p=arr; p<end; p++){
+		*p = (*p) ^ (1 << 31);
+	}
+
+	delete [] workarr;
+}
+
 void splitAndMerge(int*arr, int *work, int left, int right){
 	if(left>=right)return;
 	int size = right - left + 1;
@@ -195,7 +231,8 @@ void qsort(int*left, int*right){
 
 void sort(DArray<int>& arr){
 	if(arr.size()>0)
-	msort(&arr[0],arr.size());
+	rsort(&arr[0],arr.size());
+	//msort(&arr[0],arr.size());
 	//bsort(&arr[0],arr.size());
 	//shellsort(&arr[0],arr.size());
 	//hsort(&arr[0],arr.size());

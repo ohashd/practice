@@ -1,5 +1,6 @@
 # Sorting Algorithms
 
+* Radix Sort (For 32 bit integers)
 * Merge Sort
 * Comb Sort
 * Bubble Sort
