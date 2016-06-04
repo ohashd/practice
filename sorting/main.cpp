@@ -16,16 +16,16 @@ void rsort(int*arr, int size){
 	for(int shift=0;shift<32;shift+=8){
 
 		int count[256]={0};
-		for(int* p=arr; p<end; p++){
+		for(int* p=arr; p<end; p++){ //count each hexdigit
 			count[(*p>> shift) & 255]++;
 		}
 		int*bucketStarts[256];
 		int *starts = workarr;
-		for(int i=0;i<256;i++){
+		for(int i=0;i<256;i++){ //set where each hexdigit should start
 			bucketStarts[i]=starts;
 			starts+=count[i];
 		}
-		for(int *p=arr;p<end;p++){
+		for(int *p=arr;p<end;p++){//move elements according to it's hexdigit
 			*(bucketStarts[(*p >> shift) & 255])++=*p;
 		}
 		std::swap(arr,workarr);
