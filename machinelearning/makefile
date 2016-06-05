@@ -1,2 +1,3 @@
-default:
-	gcc main.cpp
+OBJECTS = darray.o
+default: ${OBJECTS}
+	gcc main.c ${OBJECTS} -Wall
