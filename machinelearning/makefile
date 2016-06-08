@@ -1,3 +1,3 @@
 OBJECTS = darray.o
 default: ${OBJECTS}
-	gcc main.c ${OBJECTS} -Wall
+	gcc -std=c89 main.c ${OBJECTS} -Wall

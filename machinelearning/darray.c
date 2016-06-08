@@ -3,7 +3,7 @@
 struct darray{
 	int size;
 	int capacity;
-	int* arr;
+	double* arr;
 };
 
 darray* darray_init(){
@@ -11,7 +11,7 @@ darray* darray_init(){
 	if(!ret){
 		return NULL;
 	}
-	ret->arr = malloc(sizeof(int)*7);
+	ret->arr = malloc(sizeof(double)*7);
 	if(!ret->arr){
 		free(ret);
 		return NULL;
@@ -20,15 +20,15 @@ darray* darray_init(){
 	ret->capacity=7;
 	return ret;
 }
-int darray_get(darray* darr, int ind){
+double darray_get(darray* darr, int ind){
 	return darr->arr[ind];
 }
-void darray_set(darray* darr, int ind, int val){
+void darray_set(darray* darr, int ind, double val){
 	darr->arr[ind]=val;
 }
-void darray_insert(darray* darr, int val){
+void darray_insert(darray* darr, double val){
 	if(darr->size==darr->capacity){
-		int *newarr = realloc(darr->arr,sizeof(int)*darr->capacity*2);
+		double *newarr = realloc(darr->arr,sizeof(double)*darr->capacity*2);
 		if(!newarr)return;
 		darr->arr=newarr;
 		darr->capacity*=2;

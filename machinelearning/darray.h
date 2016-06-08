@@ -6,9 +6,9 @@
 typedef struct darray darray;
 
 darray* darray_init();
-int darray_get(darray*, int ind);
-void darray_set(darray*, int ind, int val);
-void darray_insert(darray*, int val);
+double darray_get(darray*, int ind);
+void darray_set(darray*, int ind, double val);
+void darray_insert(darray*, double val);
 void darray_destroy(darray*);
 int darray_size(darray*);
 
