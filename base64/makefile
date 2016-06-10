@@ -1,2 +1,2 @@
 default:
-	gcc base64.cpp
+	gcc -std=c99 base64.c

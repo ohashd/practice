@@ -3,7 +3,7 @@
 
 static const char b64chars[65] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 static char b64decs[256] = {0};
-static bool built=false;
+static int built=0;
 
 
 //Assumes ret is big enough for atleast 1+4*ceil(strlen(orig)/3) characters
@@ -41,23 +41,23 @@ void buildB64Decs(){
 		b64decs[i]=-1;
 	}
 	for(int i=0;i<64;i++){
-		b64decs[int(b64chars[i])]=i;
+		b64decs[(int)b64chars[i]]=i;
 	}
 }
 
 //Assumes ret is big enough for atleast 3*ceil(strcspn(orig,"=\0")/4)
-bool b64Decode(const char *orig, char*ret){
+int b64Decode(const char *orig, char*ret){
 
 	int len = strcspn(orig,"=\0");
 	int totlen = strlen(orig);
 	//impossible for totlen to have 1 excess character in groups of 4
 	//and impossible to have more than 2 padding characters
 	if(len<totlen-2 || totlen%4==1){
-		return false;
+		return 0;
 	}
 
 	if(!built){
-		built=true;
+		built=1;
 		buildB64Decs();
 	}
 
@@ -67,7 +67,7 @@ bool b64Decode(const char *orig, char*ret){
 		int ind2 = b64decs[(int)(orig[i-2])];
 		int ind3 = b64decs[(int)(orig[i-1])];
 		int ind4 = b64decs[(int)(orig[i])];
-		if(ind1==-1 || ind2==-1 || ind3==-1 || ind4==-1) return false;
+		if(ind1==-1 || ind2==-1 || ind3==-1 || ind4==-1) return 0;
 		int buff= (ind1 <<18) | (ind2 << 12) | (ind3 << 6) | ind4;
 		*(ret++)=(buff >> 16) & 255;
 		*(ret++)=(buff >> 8) & 255;
@@ -76,21 +76,21 @@ bool b64Decode(const char *orig, char*ret){
 	if(len%4==2){ //2 padding =s
 		int ind1 = b64decs[(int)(orig[len-2])];
 		int ind2 = b64decs[(int)(orig[len-1])];
-		if(ind1==-1 || ind2==-1) return false;
+		if(ind1==-1 || ind2==-1) return 0;
 		int buff= (ind1 <<6) | ind2;
 		*(ret++)=(buff >> 4) & 255;
 	}else if(len%4==3){ //1 padding =s
 		int ind1 = b64decs[(int)(orig[len-3])];
 		int ind2 = b64decs[(int)(orig[len-2])];
 		int ind3 = b64decs[(int)(orig[len-1])];
-		if(ind1==-1 || ind2==-1 || ind3==-1) return false;
+		if(ind1==-1 || ind2==-1 || ind3==-1) return 0;
 		int buff= (ind1 <<12) | (ind2 << 6) | ind3;
 		*(ret++)=(buff >> 10) & 255;
 		*(ret++)=(buff >> 2) & 255;
 	}
 
 	*ret='\0';
-	return true;
+	return 1;
 }
 
 int main(){
