@@ -129,7 +129,7 @@ int main(){
 				goto exit;			
 			}
 		}
-
+		//Predict with learned weights!
 		for(int i=0;i<numOfCols-1;i++){
 			prediction+=(features[i]*weights[i]);
 		}
