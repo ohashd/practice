@@ -20,6 +20,9 @@ darray* darray_init(){
 	ret->capacity=7;
 	return ret;
 }
+double* darray_get_addr(darray*m, int ind){
+	return m->arr+ind;
+}
 double darray_get(darray* darr, int ind){
 	return darr->arr[ind];
 }
