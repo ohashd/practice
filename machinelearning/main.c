@@ -42,7 +42,7 @@ void gradientDescent(double*weights,double*data,int rows,int cols,double learnin
 			}
 		}
 		//break if error is below a threshold
-		if(totalError<eps)break;
+		if(totalError/rows<eps)break;
 
 		//transfer gradients into weights by a learning factor
 		for(int c=0;c<cols;c++){
@@ -106,7 +106,7 @@ int main(){
 	weights = malloc(numOfCols*sizeof(double));
 	features = malloc(sizeof(double)*(numOfCols));
 
-	gradientDescent(weights,darray_get_addr(a,0),numOfRows,numOfCols,0.001,0.1);
+	gradientDescent(weights,darray_get_addr(a,0),numOfRows,numOfCols,0.0001,0.01);
 
 	for(int i=0;i<numOfCols;i++){
 		printf("%f\n",weights[i]);
