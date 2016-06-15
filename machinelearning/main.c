@@ -7,8 +7,11 @@
 //Assumes `weights` is big enough for `cols` doubles
 //Assumes data is a contiguous 2d array (1d array with size rows*cols)
 //Assumes last column is the dependent
-void gradientDescent(double*weights,double*data,int rows,int cols,double learningrate,double eps){
+void gradientDescent(double*weights,double*data,int rows,int cols,double eps){
+	double learningrate=0.01;
 	double*gradients = malloc((cols)*sizeof(double));
+	double*errors = malloc(rows*sizeof(double));
+	double lastError=INFINITY;//set to infinity
 	//zero the weights
 	for(int c=0;c<(cols);c++){
 		weights[c]=0;
@@ -16,39 +19,56 @@ void gradientDescent(double*weights,double*data,int rows,int cols,double learnin
 	//cap out at 1,000,000 iterations
 	for(int i=0;i<1000000;i++){
 		double totalError=0;
+
+		//iterate through the rows and features to calculate gradients
+		for(int r=0;r<rows;r++){
+			//calculate what the model would predict in this row
+			errors[r]=weights[cols-1];
+			for(int c=0;c<(cols-1);c++){
+				errors[r]+=weights[c]*data[r*cols+c];
+			}
+			//convert to error
+ 			errors[r]-=data[(r+1)*cols-1];
+ 			//add to totalErr
+ 			totalError+=errors[r]*errors[r];
+ 		}
+		//break if error is below a threshold
+		if(totalError/rows<eps)break;
+
+ 		//if we overshot, lessen the learning rate and recalulate new weights for next iteration attempt
+ 		if(lastError<totalError){
+ 			learningrate/=2;
+			for(int c=0;c<cols;c++){
+				weights[c]+=gradients[c]*2*learningrate/rows;
+			}		
+ 			continue;
+ 		}
+
+		learningrate*=1.05;
+
+ 		lastError=totalError;
+
 		//rezero gradients
 		for(int c=0;c<(cols);c++){
 			gradients[c]=0;
 		}
-		//iterate through the rows and features to calculate gradients
+
 		for(int r=0;r<rows;r++){
-			//calculate what the model would predict in this row
-			double modelPrediction=weights[cols-1];
-			for(int c=0;c<(cols-1);c++){
-				modelPrediction+=weights[c]*data[r*cols+c];
-			}
-			//convert to error
- 			modelPrediction-=data[(r+1)*cols-1];
-
- 			//add to totalErr
- 			totalError+=fabs(modelPrediction);
-
 			//calculate the gradient for the constant feature weight
-			gradients[cols-1]+=(modelPrediction);
+			gradients[cols-1]+=errors[r];
 
 			//calculate the gradients for the other features
 			for(int c=0;c<(cols-1);c++){
-				gradients[c]+=modelPrediction*data[r*cols+c];
+				gradients[c]+=errors[r]*data[r*cols+c];
 			}
 		}
-		//break if error is below a threshold
-		if(totalError/rows<eps)break;
 
 		//transfer gradients into weights by a learning factor
 		for(int c=0;c<cols;c++){
 			weights[c]-=gradients[c]*2*learningrate/rows;
 		}		
 	}
+	free(errors);
 	free(gradients);
 }
 
@@ -106,7 +126,7 @@ int main(){
 	weights = malloc(numOfCols*sizeof(double));
 	features = malloc(sizeof(double)*(numOfCols));
 
-	gradientDescent(weights,darray_get_addr(a,0),numOfRows,numOfCols,0.0001,0.01);
+	gradientDescent(weights,darray_get_addr(a,0),numOfRows,numOfCols,0.01);
 
 	for(int i=0;i<numOfCols;i++){
 		printf("%f\n",weights[i]);
