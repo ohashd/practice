@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <errno.h>
 #include "gradientdescent.h"
+#include "knn.h"
 #include "darray.h"
 
 int main(){
 	int numOfCols=1;
 	int numOfRows=0;
 	GD_Model gd_model;
+	KNN_Model knn_model;
 	double *features=0;
 	darray* a = darray_init();
 	char buff[1024];
@@ -57,6 +59,10 @@ int main(){
 	if(!gd_init(&gd_model,darray_get_addr(a,0),numOfRows,numOfCols,0.001)){
 		printf("Error allocating memory for gradient descent model");
 	}
+	//allocate space for weights
+	if(!knn_init(&knn_model,darray_get_addr(a,0),numOfRows,numOfCols,2)){
+		printf("Error allocating memory for knn model");
+	}
 	features = malloc(sizeof(double)*(numOfCols-1));
 
 
@@ -77,6 +83,7 @@ int main(){
 			}
 		}
 		printf("%f\n",gd_predict(&gd_model,features));
+		printf("%f\n",knn_predict(&knn_model,features));
 	}
 
 	if(ferror(stdin)){
@@ -87,6 +94,7 @@ int main(){
 exit:
 	free(features);
 	gd_cleanup(&gd_model);
+	knn_cleanup(&knn_model);
 	darray_destroy(a);
 	if(fp)fclose(fp);	
 	return 0;

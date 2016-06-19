@@ -5,9 +5,10 @@ typedef struct {
 	double *data;
 	long rows;
 	long cols;
+	long k;
 } KNN_Model;
 
-KNN_Model* knn_init(KNN_Model* model,double* data, long rows, long cols);
+KNN_Model* knn_init(KNN_Model* model,double* data, long rows, long cols, long k);
 void knn_cleanup(KNN_Model* model);
 
 double knn_predict(KNN_Model* model,double *features);

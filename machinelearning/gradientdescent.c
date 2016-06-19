@@ -1,5 +1,4 @@
 #include "gradientdescent.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
 
@@ -74,7 +73,6 @@ GD_Model* gd_init(GD_Model* model,double *data, long rows,long cols, double eps)
 			model->weights[c]-=gradients[c]*2*learningrate/rows;
 		}		
 	}
-	printf("LAstError: %f",lastError);
 	free(gradients);
 
 	return model;
