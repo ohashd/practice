@@ -3,46 +3,25 @@
 #include <stdlib.h>
 #include <math.h>
 
-GD_Model* gd_create(long numOfFeatures){
-	GD_Model* ret = malloc(sizeof(GD_Model));
-	if(!ret) return NULL;
-
-	ret->weights = malloc(sizeof(double)*(numOfFeatures+1));
-	if(!ret->weights){
-		free(ret);
+//Assumes data is a contiguous 2d array (1d array with size rows*cols)
+//Assumes last column is the dependent
+GD_Model* gd_init(GD_Model* model,double *data, long rows,long cols, double eps){
+	model->weights = calloc(cols,sizeof(double));
+	if(!model->weights){
 		return NULL;
 	}
 
-	ret->numOfFeatures = numOfFeatures;
-	return ret;
-}
-
-void gd_destroy(GD_Model* model){
-	if(!model)return;
-	free(model->weights);
-	free(model);
-}
-
-double gd_predict(GD_Model* model, double* features){
-	double ret = model->weights[model->numOfFeatures];
-	for(int c=0;c<model->numOfFeatures;c++){
-		ret+=model->weights[c]*features[c];
+	double*gradients = malloc((cols+rows)*sizeof(double));
+	if(!gradients){
+		free(model->weights);
+		return NULL;
 	}
-	return ret;
-}
+	double*errors = gradients+cols;
+	long features = model->numOfFeatures = cols-1;
 
-//Assumes data is a contiguous 2d array (1d array with size rows*numOfFeatures)
-//Assumes last column is the dependent
-void gd_train(GD_Model* model,double*data,long rows,double eps){
 	double learningrate=0.01;
-	long cols = model->numOfFeatures+1;
-	double*gradients = malloc((cols)*sizeof(double));
-	double*errors = malloc(rows*sizeof(double));
 	double lastError=INFINITY;//set to infinity
-	//zero the weights
-	for(int c=0;c<(cols);c++){
-		model->weights[c]=0;
-	}
+
 	//cap out at 1,000,000 iterations
 	for(int i=0;i<1000000;i++){
 		double totalError=0;
@@ -50,8 +29,8 @@ void gd_train(GD_Model* model,double*data,long rows,double eps){
 		//iterate through the rows and features to calculate gradients
 		for(int r=0;r<rows;r++){
 			//calculate what the model would predict in this row
-			errors[r]=model->weights[model->numOfFeatures];
-			for(int c=0;c<(model->numOfFeatures);c++){
+			errors[r]=model->weights[features];
+			for(int c=0;c<(features);c++){
 				errors[r]+=model->weights[c]*data[r*cols+c];
 			}
 			//convert to error
@@ -82,10 +61,10 @@ void gd_train(GD_Model* model,double*data,long rows,double eps){
 
 		for(int r=0;r<rows;r++){
 			//calculate the gradient for the constant feature weight
-			gradients[model->numOfFeatures]+=errors[r];
+			gradients[features]+=errors[r];
 
 			//calculate the gradients for the other features
-			for(int c=0;c<(model->numOfFeatures);c++){
+			for(int c=0;c<(features);c++){
 				gradients[c]+=errors[r]*data[r*cols+c];
 			}
 		}
@@ -96,6 +75,19 @@ void gd_train(GD_Model* model,double*data,long rows,double eps){
 		}		
 	}
 	printf("LAstError: %f",lastError);
-	free(errors);
 	free(gradients);
+
+	return model;
+}
+
+void gd_cleanup(GD_Model* model){
+	free(model->weights);
+}
+
+double gd_predict(GD_Model* model, double* features){
+	double ret = model->weights[model->numOfFeatures];
+	for(int c=0;c<model->numOfFeatures;c++){
+		ret+=model->weights[c]*features[c];
+	}
+	return ret;
 }

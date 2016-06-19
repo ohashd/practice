@@ -6,7 +6,7 @@
 int main(){
 	int numOfCols=1;
 	int numOfRows=0;
-	GD_Model* gd_model=0;
+	GD_Model gd_model;
 	double *features=0;
 	darray* a = darray_init();
 	char buff[1024];
@@ -54,10 +54,10 @@ int main(){
 	}
 
 	//allocate space for weights
-	gd_model = gd_create(numOfCols-1);
+	if(!gd_init(&gd_model,darray_get_addr(a,0),numOfRows,numOfCols,0.001)){
+		printf("Error allocating memory for gradient descent model");
+	}
 	features = malloc(sizeof(double)*(numOfCols-1));
-
-	gd_train(gd_model,darray_get_addr(a,0),numOfRows,0.001);
 
 
 	//use the model to predict from stdin
@@ -76,7 +76,7 @@ int main(){
 				goto exit;			
 			}
 		}
-		printf("%f\n",gd_predict(gd_model,features));
+		printf("%f\n",gd_predict(&gd_model,features));
 	}
 
 	if(ferror(stdin)){
@@ -86,7 +86,7 @@ int main(){
 
 exit:
 	free(features);
-	gd_destroy(gd_model);
+	gd_cleanup(&gd_model);
 	darray_destroy(a);
 	if(fp)fclose(fp);	
 	return 0;
