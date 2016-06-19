@@ -6,7 +6,7 @@ typedef struct {
 	long numOfFeatures;
 } GD_Model;
 
-GD_Model* gd_init(GD_Model* model,double* data, long cols, long rows, double eps);
+GD_Model* gd_init(GD_Model* model,double* data, long rows, long cols, double eps);
 void gd_cleanup(GD_Model* model);
 
 double gd_predict(GD_Model* model,double *features);
