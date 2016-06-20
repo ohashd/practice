@@ -18,13 +18,12 @@ void knn_cleanup(KNN_Model* model){
 	free(model->data);
 }
 
-typedef struct{
-	double prediction;
-	double distance;
-} closePair;
-
 double knn_predict(KNN_Model* model,double *features){
-	closePair* closestRows = malloc(sizeof(closePair)*model->k);
+	struct{
+		double prediction;
+		double distance;
+	}* closestRows = malloc(sizeof(double)*2*model->k);
+	
 	if(!closestRows){
 		return NAN;
 	}
