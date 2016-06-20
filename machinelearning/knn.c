@@ -42,6 +42,9 @@ double knn_predict(KNN_Model* model,double *features){
 			dist+= ldist*ldist;
 		}
 
+		//If we have a perfect match, return. (Also prevents dividing by 0 later)
+		if(dist==0) return model->data[(r+1)*model->cols-1];
+
 		//check if this row is closer to features (first item in closestRows will always be the most distant closest point)
 		if(dist>=closestRows[0].distance)continue;
 
@@ -60,11 +63,23 @@ double knn_predict(KNN_Model* model,double *features){
 
 
 	double prediction=0;
+	double totalWeights=0;
+
+	//make all distances inversely relative to the largest distance
+	//(ie a row half as far as the largest distance will have twice the weight)
+	closestRows[0].distance=sqrt(closestRows[0].distance);
+	for(long k=1;k<model->k;k++){
+		closestRows[k].distance=closestRows[0].distance/sqrt(closestRows[k].distance);
+		totalWeights+=closestRows[k].distance;
+	}
+	closestRows[0].distance=1;
+	totalWeights+=1;
+
 
 	for(long k=0;k<model->k;k++){
-		prediction+=closestRows[k].prediction;
+		prediction+=closestRows[k].prediction*closestRows[k].distance;
 	}
-	prediction/=model->k;
+	prediction/=totalWeights;
 
 	return prediction;
 }
