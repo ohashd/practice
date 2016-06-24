@@ -1,4 +1,4 @@
-OBJECTS = darray.o gradientdescent.o knn.o
+OBJECTS = darray.o gradientdescent.o knn.o ols.o
 
 %.o: %.c
 	gcc -std=c99 -c -o $@ $< -Wall

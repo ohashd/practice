@@ -2,7 +2,9 @@
 
 ## Things Implemented
 * Dynamic Array in C
+
 * Batch Gradient Descent (with mean squared error)
+* K Nearest Neighbours
 
 
 ## Concepts Practiced

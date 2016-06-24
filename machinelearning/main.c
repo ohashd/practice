@@ -3,14 +3,17 @@
 #include "gradientdescent.h"
 #include "knn.h"
 #include "darray.h"
+#include "ols.h"
 
 int main(){
 	int numOfCols=1;
 	int numOfRows=0;
 	GD_Model gd_model;
 	KNN_Model knn_model;
+	OLS_Model ols_model;
 	double *features=0;
 	darray* a = darray_init();
+	darray* b = darray_init();
 	char buff[1024];
 
 	//open file
@@ -25,7 +28,7 @@ int main(){
 	for(char*c=buff; *c!=0;c++){
 		if(*c==',')numOfCols++;
 	}
-
+	numOfCols--;
 	do{/*read a line*/
 		char *p=buff;
 		for(;;){/* Process Numbers */
@@ -35,7 +38,7 @@ int main(){
 				darray_insert(a,temp);
 				p++;//skip the comma
 			}else if(*p=='\n'||*p==0){
-				darray_insert(a,temp);
+				darray_insert(b,temp);
 				break;//read next line
 			}else{
 				printf("Error converting to double\n");
@@ -56,20 +59,35 @@ int main(){
 	}
 
 	//allocate space for weights
-	if(!gd_init(&gd_model,darray_get_addr(a,0),numOfRows,numOfCols,0.001)){
+	if(!gd_init(&gd_model,
+		darray_get_addr(a,0),
+		darray_get_addr(b,0),
+		numOfRows,numOfCols,0.001)){
 		printf("Error allocating memory for gradient descent model");
 	}
 	//allocate space for weights
-	if(!knn_init(&knn_model,darray_get_addr(a,0),numOfRows,numOfCols,2)){
+	if(!knn_init(&knn_model,
+		darray_get_addr(a,0),
+		darray_get_addr(b,0),
+		numOfRows,numOfCols,2)){
 		printf("Error allocating memory for knn model");
 	}
-	features = malloc(sizeof(double)*(numOfCols-1));
+
+	//allocate space for weights
+	if(!ols_init(&ols_model,
+		darray_get_addr(a,0),
+		darray_get_addr(b,0),
+		numOfRows,numOfCols)){
+		printf("Error allocating memory for ols model");
+	}
+
+	features = malloc(sizeof(double)*(numOfCols));
 
 
 	//use the model to predict from stdin
 	while(fgets(buff,1024,stdin)){
 		char *p=buff;
-		for(int i=0;i<numOfCols-1;i++){/* Process Numbers */
+		for(int i=0;i<numOfCols;i++){/* Process Numbers */
 			double temp = strtod(p,&p);
 			if(*p==','){ /*Check if read succeeded*/
 				features[i]=temp;
@@ -84,6 +102,7 @@ int main(){
 		}
 		printf("%f\n",gd_predict(&gd_model,features));
 		printf("%f\n",knn_predict(&knn_model,features));
+		printf("%f\n",ols_predict(&ols_model,features));
 	}
 
 	if(ferror(stdin)){
@@ -95,6 +114,7 @@ exit:
 	free(features);
 	gd_cleanup(&gd_model);
 	knn_cleanup(&knn_model);
+	ols_cleanup(&ols_model);
 	darray_destroy(a);
 	if(fp)fclose(fp);	
 	return 0;
