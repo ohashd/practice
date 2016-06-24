@@ -79,7 +79,6 @@ double knn_predict(KNN_Model* model,double *features){
 	totalWeights+=1;
 
 	for(long k=0;k<model->k;k++){
-
 		prediction+=closestRows[k].prediction*closestRows[k].distance;
 	}
 	prediction/=totalWeights;
