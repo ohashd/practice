@@ -18,7 +18,6 @@ typedef struct {
 
 BNB_Model* bnb_init(BNB_Model* model,double* data, double* dependent, long rows, long cols,long numOfClasses);
 void bnb_cleanup(BNB_Model* model);
-
 long bnb_predict(BNB_Model* model,double *features);
 
 #endif
